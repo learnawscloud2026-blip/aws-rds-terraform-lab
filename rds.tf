@@ -22,23 +22,32 @@ resource "aws_db_instance" "mysql" {
 
   identifier = "terraform-mysql-db"
 
-  allocated_storage = 20
-
   engine         = "mysql"
   engine_version = "8.0"
 
   instance_class = "db.t3.micro"
 
-  db_name = var.db_name
+  allocated_storage = 20
 
+  db_name  = var.db_name
   username = var.db_username
   password = var.db_password
 
+  backup_retention_period = 1
+
+  backup_window = "03:00-04:00"
+
   publicly_accessible = true
+
+  deletion_protection = true
+
+  skip_final_snapshot = false
+
+  final_snapshot_identifier = "terraform-final-snapshot"
 
   vpc_security_group_ids = [
     aws_security_group.rds_sg.id
   ]
-
-  skip_final_snapshot = true
 }
+
+

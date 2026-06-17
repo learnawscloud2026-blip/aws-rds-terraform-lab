@@ -22,6 +22,8 @@ resource "aws_db_instance" "mysql" {
 
   identifier = "terraform-mysql-db"
 
+  apply_immediately = true
+
   engine         = "mysql"
   engine_version = "8.0"
 
@@ -51,4 +53,19 @@ resource "aws_db_instance" "mysql" {
   parameter_group_name = aws_db_parameter_group.mysql_pg.name
 }
 
+# resource "aws_db_instance" "read_replica" {
 
+#   identifier          = "terraform-mysql-replica"
+#   replicate_source_db = aws_db_instance.mysql.identifier
+
+#   instance_class = "db.t3.micro"
+
+#   publicly_accessible = true
+
+#   skip_final_snapshot = true
+# }
+
+resource "aws_db_snapshot" "manual_snapshot" {
+  db_instance_identifier = aws_db_instance.mysql.identifier
+  db_snapshot_identifier = "employee-db-snapshot"
+}

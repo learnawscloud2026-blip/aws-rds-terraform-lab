@@ -41,6 +41,8 @@ resource "aws_db_instance" "mysql" {
 
   publicly_accessible = true
 
+  multi_az = false
+
   deletion_protection = true
 
   skip_final_snapshot = false
